@@ -87,7 +87,6 @@ class LinkedList():
     - remove -> removes a given node from linked list
     - idx_remove -> removes node at given index
     - pop -> removes item from end of linked list & returns it
-    - delete_list -> deletes linked list
 
     """
 
@@ -200,6 +199,7 @@ class LinkedList():
             old_head = self.head
             self.head = node
             node.next = old_head
+            self.length += 1
         elif idx > self.length:
             print(f'Unable to add node {node.val} @ index {idx}')
         else:
@@ -207,6 +207,7 @@ class LinkedList():
             old_next = prev_node.next
             prev_node.next = node
             node.next = old_next
+            self.length += 1
     
     def append(self, node):
         """
@@ -226,6 +227,7 @@ class LinkedList():
         else:
             end_node = self.get(self.length - 1)
             end_node.next = node
+        self.length += 1
     
     def remove(self, node):
         """
@@ -245,6 +247,7 @@ class LinkedList():
         else:
             if self.head == node:
                 self.head = self.head.next
+                self.length -= 1
             else:
                 prev = self.head
                 while prev.next:
@@ -253,6 +256,7 @@ class LinkedList():
                             prev.next = node.next
                         else:
                             prev.next = None
+                        self.length -= 1
                         return
                     prev = prev.next
                 print(f'Node not found in list')
@@ -272,9 +276,12 @@ class LinkedList():
         """
         if self.length == 0:
             print('No nodes in list to remove')
+        if idx >= self.length:
+            print('Index does not exist in list')
         else:
             if idx == 0:
                 self.head = self.head.next
+                self.length -= 1
             else:
                 prev_node = self.get(idx - 2)
                 node_to_remove = prev_node.next
@@ -282,6 +289,7 @@ class LinkedList():
                     prev_node.next = node_to_remove.next
                 else:
                     prev_node.next = None
+                self.length -= 1
 
     def pop(self):
         """
@@ -301,8 +309,9 @@ class LinkedList():
             return None
         last_node = self.get(self.length - 1)
         self.idx_remove(self.length - 1)
+        self.length -= 1
         return last_node
-        
+    
     def delete_list(self):
         """
         Deletes linked list.
@@ -314,9 +323,10 @@ class LinkedList():
         RETURNS
         -------
         None
-        
+
         """
         self.head = None
+        self.length = 0
 
 # Constructing test nodes & list
 def make_test_list_1():
@@ -331,11 +341,11 @@ def make_test_list_1():
 def main():
     test_list_1 = make_test_list_1()
     test_node = ListNode(4)
+    test_node_2 = ListNode(5)
     test_list_1.append(test_node)
-    test_list_1.remove(test_list_1.head)
+    test_list_1.insert(test_node_2, 2)
     test_list_1.print()
-    test_list_2 = LinkedList()
-    test_list_2.idx_remove(1)
+    print(test_list_1.length)
 
 if __name__ == '__main__':
     main()
